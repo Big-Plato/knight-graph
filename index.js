@@ -41,23 +41,22 @@ function knightMoves(start, end) {
 
   while (queue.length > 0) {
     const first = queue.shift();
-    console.log("first", first);
-    console.log("end", end);
+
+    if (transformString(first) == transformString(end)) {
+        return path;
+      }
+      
     const moves = isMovePossible(first);
 
     // Checa se o local do cavalo é o mesmo do final
-    if (transformString(first) == transformString(end)) {
-      return path;
-    }
+    
 
-    for (let i = 0; i < moves.length; i++) {
-      if (!visited.has(transformString(moves[i]))) {
-        console.log(transformString(moves[i]));
-        queue.push(moves[i]);
-        visited.set(transformString(moves[i]), moves[i]);
-        console.log(visited);
-        console.log("Path", path);
+    for (const move of moves) {
+      if (!visited.has(transformString(move))) {
+        queue.push(move);
+        visited.set(transformString(move), move);
         path.push(moves[i]);
+        console.log("Path", path);
       }
     }
   }
