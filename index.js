@@ -68,9 +68,10 @@ function knightMoves(start, end) {
       if (!visited.has(moveKey)) { // If the visited map does not have movekey, push to queue
         queue.push(move);
         visited.set(moveKey, true); // every node visited is added with the value of truth
-        prev.set(moveKey, first); // Puts the move in the previous map, with the value of the first, e. g., the item that is deqeued from queue      }
+        prev.set(moveKey, first); // Puts the move in the previous map, with the value of the first, e. g., the item that is deqeued from queue
     }
   }
+}
 
   console.log("I am here!");
   return null;
