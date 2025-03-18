@@ -1,5 +1,3 @@
-const board = [];
-
 const isMovePossible = (arr) => {
   const [x, y] = arr;
 
@@ -14,7 +12,7 @@ const isMovePossible = (arr) => {
     [x - 1, y - 2],
   ];
 
-  return possibleMoves.filter(([x, y]) => x >= 0 && x < 8 && y >= 0 && y < 8);
+  return possibleMoves.filter(([x, y]) => x >= 0 && x < 8 && y >= 0 && y < 8); // Filter the moves that can go out of the board
 };
 
 const transformString = (arr) => {
@@ -34,32 +32,48 @@ function knightMoves(start, end) {
 
   const queue = [start];
   const visited = new Map();
-  const path = [];
+  const prev = new Map();
 
-  visited.set(transformString(start), start);
-  console.log("Visited: ", visited);
+  visited.set(transformString(start), true);
+  prev.set(transformString(start), null);
 
   while (queue.length > 0) {
     const first = queue.shift();
 
-    if (transformString(first) == transformString(end)) {
-        return path;
+    if (transformString(first) === transformString(end)) {
+      // Initialize path
+      const path = [];
+      let node = first;
+
+      while (node !== null) { // While the value of node is not null, iterate over the map that has the previous moves
+        path.unshift(node); // Adds the value of node in the beginning of the array - The first entered is going to be the last
+        node = prev.get(transformString(node)); // Get the value of previous node from the previous map
+        console.log("node: ", node)
       }
-      
+      console.log(
+        `You made it in ${path.length - 1} ${
+          path.length == 2 ? "move" : "moves"
+        }! Here's your path:`
+      );
+      for (let i = 0; i < path.length; i++) {
+        console.log(`[${path[i]}]\n`);
+      }
+      return path;
+    }
+
     const moves = isMovePossible(first);
 
-    // Checa se o local do cavalo é o mesmo do final
-    
-
     for (const move of moves) {
-      if (!visited.has(transformString(move))) {
+      const moveKey = transformString(move);  
+      if (!visited.has(moveKey)) { // If the visited map does not have movekey, push to queue
         queue.push(move);
-        visited.set(transformString(move), move);
-        path.push(moves[i]);
-        console.log("Path", path);
-      }
+        visited.set(moveKey, true); // every node visited is added with the value of truth
+        prev.set(moveKey, first); // Puts the move in the previous map, with the value of the first, e. g., the item that is deqeued from queue      }
     }
   }
+
+  console.log("I am here!");
+  return null;
 }
 
-knightMoves([3, 3], [4, 5]);
+knightMoves([3, 3], [4, 3]);
